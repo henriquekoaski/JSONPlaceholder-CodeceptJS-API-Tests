@@ -12,14 +12,14 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Instala as dependências necessárias (supondo que você está usando npm)
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Run API Tests') {
             steps {
                 // Executa os testes de API utilizando CodeceptJS
-                sh 'npx codeceptjs run --steps'
+                bat 'npx codeceptjs run --steps'
             }
         }
     }
