@@ -9,13 +9,6 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
-            steps {
-                // Instalação das dependências
-                bat 'npm install'
-            }
-        }
-        
         stage('Run API Tests') {
             steps {
                 // Execução dos testes
