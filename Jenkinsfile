@@ -1,36 +1,46 @@
 pipeline {
     agent any
-
+    
     stages {
         stage('Checkout') {
             steps {
-                // Faz o checkout do código do repositório GitHub
-                git url: 'https://github.com/henriquekoaski/JSONPlaceholder-CodeceptJS-API-Tests.git', branch: 'main'
+                // Checkout do repositório
+                git 'https://github.com/henriquekoaski/JSONPlaceholder-CodeceptJS-API-Tests.git'
             }
         }
-
+        
         stage('Install Dependencies') {
             steps {
-                // Instala as dependências necessárias (supondo que você está usando npm)
+                // Instalação das dependências
                 bat 'npm install'
             }
         }
-
+        
         stage('Run API Tests') {
             steps {
-                // Executa os testes de API utilizando CodeceptJS
+                // Execução dos testes
                 bat 'npx codeceptjs run --steps'
             }
         }
+        
+        stage('Archive Test Results') {
+            steps {
+                // Arquivamento de artefatos (ajuste conforme o formato dos relatórios)
+                archiveArtifacts artifacts: '**/output/results.xml', allowEmptyArchive: true
+            }
+        }
+        
+        stage('Publish Test Results') {
+            steps {
+                // Publicação dos resultados dos testes JUnit
+                junit '**/output/results.xml'
+            }
+        }
     }
-
+    
     post {
         always {
-            // Arquiva os resultados dos testes, se houver (opcional)
-            archiveArtifacts artifacts: '**/output/*.xml', allowEmptyArchive: true
-            // Publica relatórios de teste (se houver)
-            junit '**/output/*.xml'
-            // Limpa o workspace
+            // Ações pós-execução
             cleanWs()
         }
     }
